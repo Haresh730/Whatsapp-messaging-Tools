@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Messaging Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-4 text-center">WhatsApp Messaging Tool</h1>
+
+        <form id="whatsappForm">
+            <div class="mb-4">
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter WhatsApp Number" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+
+            <div class="mb-4">
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Type your message here" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+            </div>
+
+            <button type="button" id="sendButton" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">Send Message</button>
+        </form>
+
+        <p id="statusMessage" class="mt-4 text-center text-gray-700"></p>
+    </div>
+
+    <script>
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const message = document.getElementById('message').value;
+            const statusMessage = document.getElementById('statusMessage');
+
+            if (!phoneNumber || !message) {
+                statusMessage.textContent = 'Please provide both phone number and message.';
+                return;
+            }
+
+            try {
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+                window.open(whatsappURL, '_blank');
+
+                statusMessage.textContent = 'Message opened in WhatsApp.';
+            } catch (error) {
+                console.error(error);
+                statusMessage.textContent = 'Error sending the message.';
+            }
+        });
+    </script>
+</body>
+</html>
